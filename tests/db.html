@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test PouchDB</title>
+
+<script src="https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.find.min.js"></script>
+    </head>
+    <body>
+
+        <p>
+            Testing PouchDB under the hood ...
+        </p>
+
+<script>
+    async function main() {
+        const db = new PouchDB('PouchTest');
+        
+        let id = 'id' + (new Date()).getTime();
+
+        const doc = {
+            _id: id,
+            code: 'code',
+            value: 999,
+            list: []
+        };
+        //
+        for (let i = 0; i < 100; i++) {
+            doc.list.push({ item: i });
+        }
+
+        await db.put(doc);
+        
+        await db.createIndex({
+            index: { fields: [ 'code' ] }
+        });
+        
+        /*
+        db.get(id).then(function (doc) {
+            console.log(doc);
+
+            doc.value = doc.value + 1;
+            db.put(doc);
+        });
+        */
+        
+        var loadedDoc = await db.get(id);
+
+        loadedDoc.value += 1;
+        loadedDoc.list.push({ item: -1 });
+
+        await db.put(loadedDoc);
+
+        var result = await db.find({
+            selector: {
+                code: {
+                    "$regex": "ode"
+                }
+            }
+        });
+        console.log(result);
+    }
+
+    window.onload = (ev) => main();
+</script>
+
+    </body>
+</html>

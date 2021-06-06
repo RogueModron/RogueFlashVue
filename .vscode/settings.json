@@ -1,0 +1,10 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "editor.rulers": [80, 120],
+    "npm.enableRunFromFolder": true,
+    "vetur.format.defaultFormatter.js": "none",
+    "vetur.format.defaultFormatter.ts": "none",
+    "files.trimTrailingWhitespace": true
+}
